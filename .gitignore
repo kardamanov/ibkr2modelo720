@@ -9,3 +9,5 @@ wheels/
 # Virtual environments
 .venv
 uv.lock
+# Personal data lives in /Users/korum/Personal/data/ibkr2modelo720
+data/

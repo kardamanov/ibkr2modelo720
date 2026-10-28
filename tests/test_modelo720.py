@@ -23,9 +23,9 @@ def _make_position() -> csv_parser.Position:
     return csv_parser.Position(
         isin="US0378331005",
         description="APPLE INC",
-        quantity=70,
+        quantity=10,
         currency="USD",
-        value=19030.20,
+        value=2000.00,
         asset_class="STK",
     )
 
@@ -177,8 +177,8 @@ class TestUsdToEur:
         assert abs(result - decimal.Decimal("100")) < decimal.Decimal("0.01")
 
     def test_conversion_real(self) -> None:
-        result = modelo720.usd_to_eur(19030.20, 1.0386)
-        expected = decimal.Decimal("19030.20") / decimal.Decimal("1.0386")
+        result = modelo720.usd_to_eur(2000.00, 1.0386)
+        expected = decimal.Decimal("2000.00") / decimal.Decimal("1.0386")
         assert abs(result - expected) < decimal.Decimal("0.01")
 
 
@@ -187,10 +187,10 @@ class TestCsvParser:
         csv_content = (
             '"ISIN","Description","Quantity","CurrencyPrimary",'
             '"PositionValue","AssetClass"\n'
-            '"US0378331005","APPLE INC","70","USD","19030.2","STK"\n'
+            '"US0378331005","APPLE INC","10","USD","2000.0","STK"\n'
             '"ISIN","Description","Quantity","CurrencyPrimary",'
             '"PositionValue","AssetClass"\n'
-            '"US0378331005","APPLE INC","30","USD","8155.8","STK"\n'
+            '"US0378331005","APPLE INC","5","USD","1000.0","STK"\n'
         )
         csv_file = tmp_path / "test.csv"
         csv_file.write_text(csv_content)
@@ -198,16 +198,16 @@ class TestCsvParser:
         positions = csv_parser.parse_ibkr_csv(csv_file)
         assert len(positions) == 1
         assert positions[0].isin == "US0378331005"
-        assert positions[0].quantity == 100
-        assert abs(positions[0].value - 27186.0) < 0.01
+        assert positions[0].quantity == 15
+        assert abs(positions[0].value - 3000.0) < 0.01
 
     def test_country_code_from_isin(self) -> None:
         pos = csv_parser.Position(
             isin="LR0008862868",
             description="ROYAL CARIBBEAN",
-            quantity=2,
+            quantity=3,
             currency="USD",
-            value=557.84,
+            value=300.00,
             asset_class="STK",
         )
         assert pos.country_code == "LR"
